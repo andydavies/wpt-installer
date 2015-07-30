@@ -4,8 +4,11 @@
 #
 
 - name: wptServer deployment
-  hosts: tag_Name_GAP-wbtNetwork-wptServer
-  remote_user: "{{ environment_user }}"
+  hosts: wptServer
+  vars:
+  	host_name: 192.168.33.33
+    port_no: 8080
+    wpt_version: 2.18
   sudo: true
   roles:
      - webpagetest

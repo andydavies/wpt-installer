@@ -79,28 +79,18 @@
 
 # install webpage test and parse all config templates 
 - name: download webpagetest
-#  get_url: >
-#      url=http://git.prod.skyscanner.local/gap/webpagetest/repository/archive.zip
-#      dest=/tmp/archive.zip
-  shell: curl -o /tmp/archive.zip http://git.prod.skyscanner.local/gap/webpagetest/repository/archive.zip
+  get_url: >
+    url=https://github.com/WPO-Foundation/webpagetest/releases/download/WebPageTest-{{ wpt_version }}/webpagetest_{{ wpt_Version }}.zip
+    dest=/tmp/webpagetest_{{ wpt_version }}.zip
 
 - name: unzip webpagetest  from archive
-  command: unzip -o /tmp/archive.zip -d /tmp/webpagetest
+  command: unzip -o webpagetest_{{ wpt_version }}.zip -d /tmp/webpagetest
 
 - name: copy www directory
-  shell: cp -r /tmp/webpagetest/webpagetest.git/www/* /var/www/webpagetest/
+  shell: cp -r /tmp/webpagetest/www/* /var/www/webpagetest/
 
 - name: Ensure apache writable
   command: chown -R apache:apache /var/www/webpagetest
-  
-- name: Copy locations.ini
-  template: src=locations.ini.j2 dest=/var/www/webpagetest/settings/locations.ini owner=apache group=apache
-  
-- name: Copy settings.ini
-  template: src=settings.ini.j2 dest=/var/www/webpagetest/settings/settings.ini owner=apache group=apache
-  
-- name: Copy connectivity.ini
-  template: src=connectivity.ini.j2 dest=/var/www/webpagetest/settings/connectivity.ini owner=apache group=apache
 
 - name: restart httpd
   service: >
