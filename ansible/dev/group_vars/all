@@ -1,0 +1,10 @@
+---
+# File:    ansible/dev/group_vars/all
+# Purpose: variable definitions for all aws ec2 instances
+
+# Because the ansible/main.yml is expecting an {{ environment_user }} for the remote_user parameter
+#  add an explicit environment_user definition here to keep the playbook and command line simple
+# This should really be revisited as it maybe isn't the nicest or cleanest way of handling different
+#  environment users.
+#
+environment_user: "{{ skyscanner_stack_name }}"

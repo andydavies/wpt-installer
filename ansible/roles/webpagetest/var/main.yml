@@ -1,0 +1,8 @@
+---
+# File:    webpagetest/vars/main.yml
+# Purpose: define variables specific to the installation of a webpagetest
+
+webpagetest_host_name: 10.10.10.101
+webpagetest_port_no: 80
+#webpagetest_wpt_version: 2.15
+webpagetest_user: "{{ skyscanner_user }}"

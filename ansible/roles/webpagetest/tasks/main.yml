@@ -1,0 +1,109 @@
+---
+# File:    main.yml
+# Purpose:  playbook to deploy webpagetest
+#
+
+#selinux
+- name: verify libselinux-python are installed
+  yum: >
+    name=libselinux-python
+    state=present
+
+#yum
+- name: verify yum rpmforge repository is added
+  yum: >
+    name=http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
+    state=present
+
+- name: verify yum centos repository is add
+  template: >
+    src=centos.repo.j2
+    dest=/etc/yum.repos.d/centos.repo
+
+- name: verify yum packages are installed
+  yum: >
+    name={{ item }}
+    state=present
+  with_items:
+    - ffmpeg
+    - httpd
+    - ImageMagick
+    - libcurl
+    - php
+    - php-fpm
+    - php-gd
+    - php-pecl-apc
+    - unzip
+    - zlib
+#php 
+- name: verify php-fpm is running and enabled
+  service: >
+    name=php-fpm
+    state=restarted
+    enabled=yes
+
+# httpd
+- name: remove welcome.conf
+  file: >
+    path=/etc/httpd/conf.d/welcome.conf
+    state=absent
+
+- name: verify httpd is configured
+  template: >
+    src=httpd.conf.j2
+    dest=/etc/httpd/conf/httpd.conf
+
+- name: create webpagetest directory
+  file: >
+    path=/var/www/webpagetest/
+    state=directory
+    owner=apache
+    group=apache
+
+- name: verify httpd is running and enabled
+  service: >
+    name=httpd
+    state=running
+    enabled=yes
+
+# iptabes
+- name: verify iptables is replaced
+  template: >
+    src=iptables.j2
+    dest=/etc/sysconfig/iptables
+
+- name: verify iptables is restarted
+  service: >
+    name=iptables
+    state=restarted
+
+# install webpage test and parse all config templates 
+- name: download webpagetest
+#  get_url: >
+#      url=http://git.prod.skyscanner.local/gap/webpagetest/repository/archive.zip
+#      dest=/tmp/archive.zip
+  shell: curl -o /tmp/archive.zip http://git.prod.skyscanner.local/gap/webpagetest/repository/archive.zip
+
+- name: unzip webpagetest  from archive
+  command: unzip -o /tmp/archive.zip -d /tmp/webpagetest
+
+- name: copy www directory
+  shell: cp -r /tmp/webpagetest/webpagetest.git/www/* /var/www/webpagetest/
+
+- name: Ensure apache writable
+  command: chown -R apache:apache /var/www/webpagetest
+  
+- name: Copy locations.ini
+  template: src=locations.ini.j2 dest=/var/www/webpagetest/settings/locations.ini owner=apache group=apache
+  
+- name: Copy settings.ini
+  template: src=settings.ini.j2 dest=/var/www/webpagetest/settings/settings.ini owner=apache group=apache
+  
+- name: Copy connectivity.ini
+  template: src=connectivity.ini.j2 dest=/var/www/webpagetest/settings/connectivity.ini owner=apache group=apache
+
+- name: restart httpd
+  service: >
+    name=httpd
+    state=restarted
+

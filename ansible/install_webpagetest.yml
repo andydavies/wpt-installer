@@ -1,0 +1,11 @@
+---
+# File:    main.yml
+# Purpose:  playbook to deploy webpagetest
+#
+
+- name: wptServer deployment
+  hosts: tag_Name_GAP-wbtNetwork-wptServer
+  remote_user: "{{ environment_user }}"
+  sudo: true
+  roles:
+     - webpagetest

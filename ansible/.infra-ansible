@@ -1,0 +1,13 @@
+# INFRA_ANSIBLE_VERSION determines which version of infrastructure/ansible you wish to use.
+# The project is released on a semi-regular basis so this variable allows you to work from a static baseline.
+INFRA_ANSIBLE_VERSION=1.0.0-b171
+
+# USE_ANSIBLE_VERSION allows you to use our new ansible virtualenvs so you can pick and choose your version
+# of ansible to use in your project. Some teams will want legacy support, some will want the most up-to-date version.
+USE_ANSIBLE_VERSION=1.9.1
+
+# INFRA_ANSIBLE_PRIVATE_KEY_AWS is the absolute path of a private key for the instances you intend to connect to.
+# This key is uploaded as part of a normal Jumpbox configuration run and should be different than those you use
+# to access the Jumpbox with via TeamCity.
+
+INFRA_ANSIBLE_PRIVATE_KEY_AWS=/home/ec2-user/keys/GAPwbtnetwork.pem

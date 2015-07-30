@@ -1,0 +1,9 @@
+---
+# File:    main.yml
+# Purpose:  playbook to deploy webpagetest
+#
+
+- name: stack deplotment
+  hosts: all
+- include: install_webpagetest.yml
+- include: install_sitespeedio.yml

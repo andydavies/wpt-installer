@@ -1,0 +1,25 @@
+---
+# File:    aws/group_vars/tag_Sandbox_dev
+# Purpose: variable declarations applicable to all local Vagrant dev hosts in the wbtNetworks example app's appservers group
+
+# application configuration
+app_config_import_os: "true"
+app_config_version: "{{ build_number }}"
+app_config_debug: True
+app_config_app_root_dir: "os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, os.pardir))"
+
+app_config_import_logs:
+  - DEBUG
+
+app_log_config:
+  name: "{{ app_name }}"
+  min_log_level: debug_level
+  file_handler:
+    location: 'os.path.join(APPLICATION_ROOT_DIR, "logs")'
+    filename: "{{ app_name }}.log"
+    max_size: 200000000
+    backups: 5
+    
+app_graylog_handler:
+  host: clog.int-review.skyscanner.local
+  port: 12201

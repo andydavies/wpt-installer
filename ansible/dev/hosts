@@ -1,0 +1,14 @@
+# File:    dev/hosts
+# Purpose: example dev environment inventory file for the wbtNetwork example app
+
+[target01]
+10.10.10.101
+
+[target02]
+10.10.10.102
+
+[tag_Name_GAP-wbtNetwork-wptServer:children]
+target01
+
+[tag_Name_GAP-wbtNetwork-sitespeedio:children]
+target02

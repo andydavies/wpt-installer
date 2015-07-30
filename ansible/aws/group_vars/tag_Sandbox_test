@@ -1,0 +1,23 @@
+---
+# File:    aws/group_vars/tag_Sandbox_test
+# Purpose: variable declarations applicable to all pre-prod hosts in the wbtNetwork example app's appservers group
+
+# application configuration
+app_config_version: "{{ build_number }}"
+
+app_config_import_logs:
+  - DEBUG
+  - ERROR
+
+app_log_config:
+  name: wbtNetwork
+  min_log_level: debug_level
+  file_handler:
+    location: '"/var/log/wbtNetwork"'
+    filename: "{{ app_name }}.log"
+    max_size: 200000000
+    backups: 5
+
+app_graylog_handler:
+  host: clog.pre-prod.skyscanner.local
+  port: 12201
