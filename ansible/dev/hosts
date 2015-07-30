@@ -1,0 +1,5 @@
+# File:    dev/hosts
+# Purpose: example dev environment inventory file for the wptSErver example app
+
+[wptServer]
+10.10.10.101
